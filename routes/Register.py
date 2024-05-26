@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for, redirect
 from bank import conn, cur
 
 register_route = Blueprint('register', __name__)
@@ -21,7 +21,7 @@ def submit():
         cur.execute("INSERT INTO (your_table) (name_, surname, email, password_) VALUES (%s, %s, %s, %s)", (name_, surname, email, password_))
         conn.commit()
 
-        return 'Dados inseridos.'
+        return redirect(url_for('login.login'))
     except KeyError:
         return 'Campos do formulário ausentes.', 400
     finally:
