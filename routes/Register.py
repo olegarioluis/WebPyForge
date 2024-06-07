@@ -25,7 +25,7 @@ def submit():
         return render_template('success.html')
 
     except KeyError:
-        return 'Campos do formulário ausentes.', 400
+        return 'Missing form fields.', 400
     finally:
 
         cur.close()
