@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from bank import conn, cur
+import time
 
 register_route = Blueprint('register', __name__)
 
@@ -17,15 +18,22 @@ def submit():
         email = request.form['email']
         password_ = request.form['password']
 
-        #Insert data into the Database
-        cur.execute("INSERT INTO (your_table) (name_, surname, email, password_) VALUES (%s, %s, %s, %s)", (name_, surname, email, password_))
+        cur.execute("INSERT INTO (your table) (name_, surname, email, password_) VALUES (%s, %s, %s, %s)",
+                    (name_, surname, email, password_))
         conn.commit()
 
-        return redirect(url_for('login.login'))
+        return render_template('success.html')
+
     except KeyError:
         return 'Campos do formulário ausentes.', 400
     finally:
-        
-        # Close Connection
+
         cur.close()
         conn.close()
+
+
+@register_route.route('/redirect')
+def redirect_page():
+
+    time.sleep(2)
+    return redirect(url_for('login.login'))
